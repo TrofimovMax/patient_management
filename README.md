@@ -18,8 +18,6 @@ Make sure you have Ruby installed (3.4.5) along with Rails 8.0.3. You'll also ne
 
 ## Database creation
 
-Create the PostgreSQL database as configured in `config/database.yml`.
-
 Commands to create and setup the database:
 ```
 rails db:create
@@ -95,3 +93,13 @@ brew services start redis
 
 Make sure you have Ruby and dependencies installed, then run:
 `bin/rails server`
+
+### Test Setup
+
+1. Create a database for tests
+```
+docker-compose run web rails db:create RAILS_ENV=test
+docker-compose run web rails db:migrate RAILS_ENV=test
+```
+2. Run RSpec using the command
+   `docker-compose run web bundle exec rspec` or `rspec spec/`

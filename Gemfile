@@ -42,34 +42,40 @@ gem "image_processing", "~> 1.2"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
-  gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
+  gem "debug"
 
   # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
-  gem "brakeman", require: false
+  # gem "brakeman", require: false
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
-  gem "rubocop-rails-omakase", require: false
+  # gem "rubocop-rails-omakase", require: false
 
-  # Add pry for debugging and console
-  gem "pry"
+  gem 'dotenv-rails'
 
-  # Annotate models automatically
-  gem "annotate"
-
-  # RSpec for testing
-  gem "rspec-rails", "~> 8.0"
-  gem "rspec-mocks", "~> 3.13"
-  gem "rspec-expectations", "~> 3.13"
-  gem "rspec-core", "~> 3.13"
+  gem "rubocop", '~> 1'
+  gem "rubocop-github", '~> 0.26.0'
+  gem "rubocop-performance", '~> 1'
+  gem "rubocop-rails", '~> 2'
+  gem "rubocop-rspec", '~> 3'
 end
 
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
-  gem "web-console"
+  # gem "web-console"
+
+  # Add pry for debugging and console
+  gem "pry"
 end
 
 group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
-  gem "selenium-webdriver"
+  # gem "selenium-webdriver"
+
+  # RSpec for testing
+  gem "rspec-rails", "~> 8.0"
+  gem 'rspec-wait', "~> 1.0"
+
+  gem 'factory_bot_rails', '~> 6.5'
+  gem 'faker', '~> 3.5'
 end
