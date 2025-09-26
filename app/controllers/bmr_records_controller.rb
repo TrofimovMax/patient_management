@@ -6,7 +6,7 @@ class BmrRecordsController < ApplicationController
   def index
     patient_id = params[:patient_id]
     unless patient_id.present?
-      return render json: { error: 'patient_id is required' }, status: :unprocessable_entity
+      return render json: { error: 'patient_id is required' }, status: :unprocessable_content
     end
 
     bmr_records = BmrRecord.where(patient_id: patient_id)
@@ -29,14 +29,14 @@ class BmrRecordsController < ApplicationController
   def create
     validator = BmrRecords::Validations::CreateValidator.new(params.permit(:patient_id, :formula))
     unless validator.valid?
-      return render json: { errors: validator.errors }, status: :unprocessable_entity
+      return render json: { errors: validator.errors }, status: :unprocessable_content
     end
 
     service = BmrRecords::CreateService.new(params.permit(:patient_id, :formula))
     result = service.call
 
     if result[:errors]
-      render json: result, status: :unprocessable_entity
+      render json: result, status: :unprocessable_content
     else
       render json: result, status: :created
     end

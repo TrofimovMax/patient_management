@@ -20,6 +20,9 @@ gem "jbuilder"
 # for pagination
 gem 'kaminari'
 
+# for requests to the API of third-party services
+gem 'httparty', '~> 0.23'
+
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
 # gem "bcrypt", "~> 3.1.7"
 
@@ -82,4 +85,8 @@ group :test do
 
   gem 'factory_bot_rails', '~> 6.5'
   gem 'faker', '~> 3.5'
+
+  # for API testing
+  gem 'vcr'
+  gem 'webmock'
 end

@@ -79,7 +79,7 @@ RSpec.describe BmrRecordsController, type: :controller do
     context "when patient_id is missing" do
       it "returns unprocessable entity status" do
         get :index
-        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response).to have_http_status(:unprocessable_content)
         expect(JSON.parse(response.body)['error']).to eq('patient_id is required')
       end
     end

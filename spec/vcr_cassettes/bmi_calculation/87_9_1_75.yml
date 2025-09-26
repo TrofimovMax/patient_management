@@ -1,0 +1,47 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://bmicalculatorapi.vercel.app/api/bmi/87.9/1.75
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Access-Control-Allow-Origin:
+      - "*"
+      Age:
+      - '0'
+      Cache-Control:
+      - public, max-age=0, must-revalidate
+      Content-Length:
+      - '67'
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 26 Sep 2025 14:27:08 GMT
+      Server:
+      - Vercel
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubDomains; preload
+      X-Vercel-Cache:
+      - MISS
+      X-Vercel-Id:
+      - arn1::iad1::9rj4s-1758896828696-d242aac7eb62
+    body:
+      encoding: UTF-8
+      string: '{"Category":"Overweight","bmi":28.702,"height":1.75,"weight":87.9}
+
+        '
+  recorded_at: Fri, 26 Sep 2025 14:27:08 GMT
+recorded_with: VCR 6.3.1

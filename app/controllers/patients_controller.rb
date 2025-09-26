@@ -22,7 +22,7 @@ class PatientsController < ApplicationController
     service = Patients::CreateService.new(patient_params)
     result = service.call
     if result[:errors]
-      render json: result, status: :unprocessable_entity
+      render json: result, status: :unprocessable_content
     else
       render json: result, status: :created
     end
@@ -36,7 +36,7 @@ class PatientsController < ApplicationController
     service = Patients::UpdateService.new(@patient, patient_params)
     result = service.call
     if result[:errors]
-      render json: result, status: :unprocessable_entity
+      render json: result, status: :unprocessable_content
     else
       render json: result
     end
