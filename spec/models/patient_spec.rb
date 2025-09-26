@@ -48,6 +48,13 @@ RSpec.describe Patient, type: :model do
     end
   end
 
+  describe 'associations' do
+    it do
+      is_expected.to have_many(:patient_attending_physicians)
+      is_expected.to have_many(:attending_physicians).through(:patient_attending_physicians)
+    end
+  end
+
   describe 'uniqueness validation' do
     subject { build(:patient) }
 

@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 class Patient < ApplicationRecord
+  has_many :patient_attending_physicians
+  has_many :attending_physicians, through: :patient_attending_physicians
+
   enum :gender, { male: 0, female: 1, other: 2 }, prefix: true, validate: true, default: :male
 
   validates :first_name, presence: true, length: { maximum: 100 }

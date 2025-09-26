@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_26_064531) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_26_084750) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -20,6 +20,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_26_064531) do
     t.string "middle_name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "patient_attending_physicians", force: :cascade do |t|
+    t.bigint "patient_id", null: false
+    t.bigint "attending_physician_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["attending_physician_id"], name: "index_patient_attending_physicians_on_attending_physician_id"
+    t.index ["patient_id", "attending_physician_id"], name: "index_patient_physicians_on_patient_and_physician", unique: true
+    t.index ["patient_id"], name: "index_patient_attending_physicians_on_patient_id"
   end
 
   create_table "patients", force: :cascade do |t|
@@ -34,4 +44,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_26_064531) do
     t.datetime "updated_at", null: false
     t.index ["first_name", "last_name", "middle_name", "birthday"], name: "index_patients_on_name_and_birthday", unique: true
   end
+
+  add_foreign_key "patient_attending_physicians", "attending_physicians"
+  add_foreign_key "patient_attending_physicians", "patients"
 end
