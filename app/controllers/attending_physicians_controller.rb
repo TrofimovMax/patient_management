@@ -5,7 +5,7 @@ class AttendingPhysiciansController < ApplicationController
 
   # GET /attending_physicians
   def index
-    @attending_physicians = AttendingPhysician.all
+    @attending_physicians = AttendingPhysician.all.limit(params[:limit] || 20).offset(params[:offset] || 0)
     render json: @attending_physicians
   end
 

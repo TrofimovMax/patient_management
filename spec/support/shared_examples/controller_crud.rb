@@ -2,11 +2,17 @@
 
 RSpec.shared_examples "a JSON CRUD controller" do
   describe "GET #index" do
-    it "returns a success response with collection" do
-      record = model_class.create!(valid_attributes)
-      get url_helper(:index)
+    it "returns a success response with paginated collection" do
+      first_record = model_class.create!(valid_attributes)
+      second_record = model_class.create!(valid_attributes.merge(first_name: 'Second'))
+      third_record = model_class.create!(valid_attributes.merge(first_name: 'Third'))
+
+      get url_helper(:index), params: { limit: 1, offset: 1 }
+
       expect(response).to have_http_status(:ok)
-      expect(json_response.any? { |r| r['id'] == record.id }).to be(true)
+
+      expect(json_response.size).to eq(1)
+      expect(json_response.first['id']).to eq(second_record.id)
     end
   end
 
