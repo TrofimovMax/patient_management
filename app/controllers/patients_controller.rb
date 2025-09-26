@@ -4,8 +4,9 @@ class PatientsController < ApplicationController
   before_action :set_patient, only: %i[show edit update destroy]
 
   def index
-    @patients = Patient.all
-    render json: @patients
+    filtered_scope = Patients::Filter.new(params).call
+    patients = filtered_scope.limit(params[:limit] || 20).offset(params[:offset] || 0)
+    render json: patients
   end
 
   def show
