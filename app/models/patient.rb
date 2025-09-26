@@ -13,4 +13,6 @@ class Patient < ApplicationRecord
 
   validates :height, presence: true, numericality: { greater_than: 0 }
   validates :weight, presence: true, numericality: { greater_than: 0 }
+
+  validates :first_name, uniqueness: { scope: [:last_name, :middle_name, :birthday] }
 end

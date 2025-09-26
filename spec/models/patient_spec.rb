@@ -35,4 +35,27 @@ RSpec.describe Patient, type: :model do
       expect(patient).to respond_to(:weight)
     end
   end
+
+  it 'validates uniqueness of first_name, last_name, middle_name and birthday combination' do
+    Patient.create!(
+      first_name: 'John',
+      last_name: 'Pitters',
+      middle_name: 'A',
+      birthday: Date.new(1980, 1, 1),
+      gender: 'male',
+      height: 180.5,
+      weight: 75.0
+    )
+    duplicate_patient = Patient.new(
+      first_name: 'John',
+      last_name: 'Pitters',
+      middle_name: 'A',
+      birthday: Date.new(1980, 1, 1),
+      gender: 'female',
+      height: 165.0,
+      weight: 60.0
+    )
+    expect(duplicate_patient).not_to be_valid
+    expect(duplicate_patient.errors).to contain_exactly("First name has already been taken")
+  end
 end
