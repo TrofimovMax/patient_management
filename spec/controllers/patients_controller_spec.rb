@@ -90,7 +90,7 @@ RSpec.describe "Patients", type: :request do
 
       it "returns errors json with status 422" do
         post patients_path, params: { patient: invalid_attributes }
-        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response).to have_http_status(:unprocessable_content)
         expect(json['errors']).to a_hash_including("First name can't be blank")
       end
     end
@@ -135,7 +135,7 @@ RSpec.describe "Patients", type: :request do
       it "returns errors json with status 422" do
         patient = Patient.create! valid_attributes
         patch patient_path(patient), params: { patient: invalid_attributes }
-        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response).to have_http_status(:unprocessable_content)
         expect(json['errors']).to a_hash_including("First name can't be blank")
       end
     end

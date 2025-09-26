@@ -322,6 +322,8 @@ GEM
       ffi (~> 1.12)
       logger
     securerandom (0.4.1)
+    shoulda-matchers (6.5.0)
+      activesupport (>= 5.2.0)
     solid_cable (3.0.12)
       actioncable (>= 7.2)
       activejob (>= 7.2)
@@ -400,6 +402,7 @@ DEPENDENCIES
   rubocop-performance (~> 1)
   rubocop-rails (~> 2)
   rubocop-rspec (~> 3)
+  shoulda-matchers (~> 6.0)
   solid_cable
   solid_cache
   solid_queue

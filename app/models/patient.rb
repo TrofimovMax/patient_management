@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Patient < ApplicationRecord
-  enum :gender, { male: 0, female: 1, other: 2 }, default: 0, prefix: true
+  enum :gender, { male: 0, female: 1, other: 2 }, prefix: true, validate: true, default: :male
 
   validates :first_name, presence: true, length: { maximum: 100 }
   validates :last_name, presence: true, length: { maximum: 100 }

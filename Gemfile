@@ -75,6 +75,7 @@ group :test do
   # RSpec for testing
   gem "rspec-rails", "~> 8.0"
   gem 'rspec-wait', "~> 1.0"
+  gem 'shoulda-matchers', '~> 6.0'
 
   gem 'factory_bot_rails', '~> 6.5'
   gem 'faker', '~> 3.5'

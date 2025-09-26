@@ -4,58 +4,79 @@ require 'rails_helper'
 
 RSpec.describe Patient, type: :model do
   describe 'enum gender' do
-    it 'contains correct keys and values' do
-      expect(Patient.genders.keys).to contain_exactly('male', 'female', 'other')
-      expect(Patient.genders.values).to contain_exactly(0, 1, 2)
+    it { is_expected.to define_enum_for(:gender) }
+
+    it 'validates inclusion of gender' do
+      expect(subject).to allow_value('male').for(:gender)
+      expect(subject).to allow_value('female').for(:gender)
+      expect(subject).to allow_value('other').for(:gender)
+      expect(subject).not_to allow_value('invalid').for(:gender)
     end
   end
 
-  describe 'validations and attributes' do
-    it 'can create a valid patient' do
-      patient = Patient.new(
+  describe 'validations' do
+    it do
+      is_expected.to validate_presence_of(:first_name)
+      is_expected.to validate_length_of(:first_name).is_at_most(100)
+
+      is_expected.to validate_presence_of(:last_name)
+      is_expected.to validate_length_of(:last_name).is_at_most(100)
+
+      is_expected.to validate_length_of(:middle_name).is_at_most(100).allow_blank
+
+      is_expected.to validate_presence_of(:birthday)
+
+      is_expected.to validate_presence_of(:height)
+      is_expected.to validate_numericality_of(:height).is_greater_than(0)
+
+      is_expected.to validate_presence_of(:weight)
+      is_expected.to validate_numericality_of(:weight).is_greater_than(0)
+    end
+  end
+
+  describe 'columns' do
+    subject { build(:patient) }
+
+    it do
+      is_expected.to have_db_column(:first_name).of_type(:string)
+      is_expected.to have_db_column(:last_name).of_type(:string)
+      is_expected.to have_db_column(:middle_name).of_type(:string)
+      is_expected.to have_db_column(:birthday).of_type(:date)
+      is_expected.to have_db_column(:gender).of_type(:integer)
+      is_expected.to have_db_column(:height).of_type(:float)
+      is_expected.to have_db_column(:weight).of_type(:float)
+    end
+  end
+
+  describe 'uniqueness validation' do
+    subject { build(:patient) }
+
+    before do
+      create(
+        :patient,
         first_name: 'John',
         last_name: 'Pitters',
-        middle_name: '',
+        middle_name: 'A',
         birthday: Date.new(1980, 1, 1),
         gender: 'male',
         height: 180.5,
         weight: 75.0
       )
-      expect(patient).to be_valid
     end
 
-    it 'should respond to attributes' do
-      patient = Patient.new
-      expect(patient).to respond_to(:first_name)
-      expect(patient).to respond_to(:last_name)
-      expect(patient).to respond_to(:middle_name)
-      expect(patient).to respond_to(:birthday)
-      expect(patient).to respond_to(:gender)
-      expect(patient).to respond_to(:height)
-      expect(patient).to respond_to(:weight)
+    it 'validates uniqueness of first_name, last_name, middle_name and birthday combination' do
+      duplicate_patient = build(
+        :patient,
+        first_name: 'John',
+        last_name: 'Pitters',
+        middle_name: 'A',
+        birthday: Date.new(1980, 1, 1),
+        gender: 'female',
+        height: 165.0,
+        weight: 60.0
+      )
+      expect(duplicate_patient).not_to be_valid
+      expect(duplicate_patient.errors[:first_name]).to include('has already been taken')
     end
-  end
-
-  it 'validates uniqueness of first_name, last_name, middle_name and birthday combination' do
-    Patient.create!(
-      first_name: 'John',
-      last_name: 'Pitters',
-      middle_name: 'A',
-      birthday: Date.new(1980, 1, 1),
-      gender: 'male',
-      height: 180.5,
-      weight: 75.0
-    )
-    duplicate_patient = Patient.new(
-      first_name: 'John',
-      last_name: 'Pitters',
-      middle_name: 'A',
-      birthday: Date.new(1980, 1, 1),
-      gender: 'female',
-      height: 165.0,
-      weight: 60.0
-    )
-    expect(duplicate_patient).not_to be_valid
-    expect(duplicate_patient.errors).to contain_exactly("First name has already been taken")
   end
 end
