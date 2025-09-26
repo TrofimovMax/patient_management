@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_26_084750) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_26_123122) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -20,6 +20,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_26_084750) do
     t.string "middle_name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "bmr_records", force: :cascade do |t|
+    t.float "mifflin_st_jeor"
+    t.float "harris_benedict"
+    t.bigint "patient_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["patient_id"], name: "index_bmr_records_on_patient_id"
   end
 
   create_table "patient_attending_physicians", force: :cascade do |t|
@@ -45,6 +54,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_26_084750) do
     t.index ["first_name", "last_name", "middle_name", "birthday"], name: "index_patients_on_name_and_birthday", unique: true
   end
 
+  add_foreign_key "bmr_records", "patients"
   add_foreign_key "patient_attending_physicians", "attending_physicians"
   add_foreign_key "patient_attending_physicians", "patients"
 end
