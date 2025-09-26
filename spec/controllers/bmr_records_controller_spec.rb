@@ -71,4 +71,37 @@ RSpec.describe BmrRecordsController, type: :controller do
       end
     end
   end
+
+  describe "GET /bmr_records" do
+    let(:patient) { create(:patient) }
+    let!(:bmr_records) { create_list(:bmr_record, 25, patient:) }
+
+    context "when patient_id is missing" do
+      it "returns unprocessable entity status" do
+        get :index
+        expect(response).to have_http_status(:unprocessable_entity)
+        expect(JSON.parse(response.body)['error']).to eq('patient_id is required')
+      end
+    end
+
+    context "when patient_id is present" do
+      it "returns first page of paginated bmr records" do
+        get :index, params: { patient_id: patient.id, page: 1 }
+        expect(response).to have_http_status(:ok)
+        json = JSON.parse(response.body)
+        expect(json['bmr_records'].length).to eq(20)
+        expect(json['meta']['current_page']).to eq(1)
+        expect(json['meta']['total_pages']).to eq(2)
+        expect(json['meta']['total_count']).to eq(25)
+      end
+
+      it "returns second page of paginated bmr records" do
+        get :index, params: { patient_id: patient.id, page: 2 }
+        expect(response).to have_http_status(:ok)
+        json = JSON.parse(response.body)
+        expect(json['bmr_records'].length).to eq(5)
+        expect(json['meta']['current_page']).to eq(2)
+      end
+    end
+  end
 end
