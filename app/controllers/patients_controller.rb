@@ -18,11 +18,12 @@ class PatientsController < ApplicationController
   end
 
   def create
-    @patient = Patient.new(patient_params)
-    if @patient.save
-      render json: @patient, status: :created
+    service = Patients::CreateService.new(patient_params)
+    result = service.call
+    if result[:errors]
+      render json: result, status: :unprocessable_entity
     else
-      render json: { errors: @patient.errors.full_messages }, status: :unprocessable_entity
+      render json: result, status: :created
     end
   end
 
@@ -31,10 +32,12 @@ class PatientsController < ApplicationController
   end
 
   def update
-    if @patient.update(patient_params)
-      render json: @patient
+    service = Patients::UpdateService.new(@patient, patient_params)
+    result = service.call
+    if result[:errors]
+      render json: result, status: :unprocessable_entity
     else
-      render json: { errors: @patient.errors.full_messages }, status: :unprocessable_entity
+      render json: result
     end
   end
 
